@@ -103,7 +103,7 @@ void runCode(int i, int j){
         }
         if (fl[i] == '[') {
             lastBracket = i; 
-            runCode(i+1, findClosingBracket(i)-1);
+            runCode(i+1, findClosingBracket(i));
             i = findClosingBracket(i);
         }
         if (fl[i] == ']') {
@@ -112,6 +112,8 @@ void runCode(int i, int j){
                 i = lastBracket;
             }       
         } 
+        // check if fl[i] is any of the letters of the alphabet 
+        
         i++; 
     }
 }
