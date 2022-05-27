@@ -126,6 +126,9 @@ void runCode(int i, int j){
             // get one char from iostream
             tape[ind] = asciiTranslate(getchar());
         }
+        if (fl[i] == '!'){
+            fprintf(out, "%d", tape[ind]); 
+        }
         if (fl[i] == '[') {
             lastBracket = i; 
             if (tape[ind] != 0){
