@@ -1,7 +1,8 @@
 #include <stdio.h>  
 #include <string.h> 
+#include <stdlib.h>
 #define fileSize 1000
-#define arraySize 100
+#define arraySize 10
 int charAmt = 0; 
 // Contains where the file to be ran is
 char *fileDir; 
@@ -63,12 +64,31 @@ int findClosingBracket(int start) {
     return -1;
 }
 
+// Find the next curly bracket
+int findCurlyBracket(int start) {
+    int i = start;
+    int open = 0;
+    while (fl[i] != '\0') {
+        if (fl[i] == '{'){
+            open++;
+        }
+        if (fl[i] == '}') {
+            open--;
+        }
+        if (open == 0) {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}
+
 // Translates char into ascii code
 char asciiTranslate(char find){
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 1000; i++){
         char a = i;
         if (a == find){
-            return i;  
+            return i;
         }
     }
 }
@@ -76,6 +96,10 @@ char asciiTranslate(char find){
 void runCode(int i, int j){
     int lastBracket = 0; 
     while (i < j) {
+        if (ind >= arraySize-1){
+                ind = 0;
+                printf("At end of tape!\n\n\n");
+        }
         printf("Index:%d\nChar:%c\n", i, fl[i]); 
         if (fl[i] == '+') {
             printf("Increasing value at index %d by 1\n", ind);
@@ -88,7 +112,7 @@ void runCode(int i, int j){
             printf("Value is now %d\n", tape[ind]);
         }
         if (fl[i] == '>') {
-            printf("Increasing index %d by 1\n", ind);
+            printf("Increasing index %d by 1\n", ind);   
             ind++;
         }
         if (fl[i] == '<') {
@@ -99,7 +123,8 @@ void runCode(int i, int j){
             fprintf(out, "%c", tape[ind]);
         }
         if (fl[i] == ',') {
-            fprintf(out, "%d", tape[ind]);
+            // get one char from iostream
+            tape[ind] = asciiTranslate(getchar());
         }
         if (fl[i] == '[') {
             lastBracket = i; 
@@ -112,8 +137,19 @@ void runCode(int i, int j){
             printf("Heading back to [\n"); 
             if (tape[ind]!=0){
                 i = lastBracket;
-            }       
+            }
         } 
+        if (fl[i] == '{'){
+            int distance = findCurlyBracket(i)-i;
+            int newIndex = 0;
+            int num[100]; 
+            int cnt = 0; 
+
+            newIndex = atoi(&fl[i+1]); 
+            tape[newIndex] = tape[ind]; 
+
+            printf("Number is: %d\n", newIndex);
+        }
         // check if fl[i] is any of the letters of the alphabet 
         
         i++; 
@@ -144,7 +180,7 @@ void main(int argc, char *argv[] )  {
         printf("Output directory: %s\n", argv[2]);
     }
 
-
+    // Open the file
     ptr = fopen(fileDir, "r"); 
 
     // Place the file contents into the fl string, fl stands for file contents --> fl 
