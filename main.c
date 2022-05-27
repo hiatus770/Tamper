@@ -96,14 +96,16 @@ void runCode(int i, int j){
             ind--;
         }
         if (fl[i] == '.') {
-            fprintf(out, "%d", tape[ind]);
+            fprintf(out, "%c", tape[ind]);
         }
         if (fl[i] == ',') {
-            fprintf(out, "%c", tape[ind]);
+            fprintf(out, "%d", tape[ind]);
         }
         if (fl[i] == '[') {
             lastBracket = i; 
-            runCode(i+1, findClosingBracket(i));
+            if (tape[ind] != 0){
+                runCode(i+1, findClosingBracket(i));
+            }
             i = findClosingBracket(i);
         }
         if (fl[i] == ']') {
